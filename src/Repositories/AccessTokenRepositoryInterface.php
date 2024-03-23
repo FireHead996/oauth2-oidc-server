@@ -30,15 +30,23 @@ interface AccessTokenRepositoryInterface extends RepositoryInterface
     public function getNewToken(
         ClientEntityInterface $clientEntity,
         array $scopes,
-        mixed $userIdentifier = null
+        string|null $userIdentifier = null
     ): AccessTokenEntityInterface;
 
     /**
+     * Store access token into storage
+     *
      * @throws UniqueTokenIdentifierConstraintViolationException
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void;
 
+    /**
+     * Revoke access token by identifier
+     */
     public function revokeAccessToken(string $tokenId): void;
 
+    /**
+     * Check if access token with provided identifier is revoked
+     */
     public function isAccessTokenRevoked(string $tokenId): bool;
 }

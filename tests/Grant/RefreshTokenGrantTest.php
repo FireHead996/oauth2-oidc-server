@@ -80,7 +80,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -144,7 +144,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -208,7 +208,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo', 'bar'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -268,7 +268,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo', 'bar'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -391,7 +391,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -443,7 +443,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() - 3600,
             ]
         );
@@ -496,7 +496,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -578,7 +578,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => 'zyxwvu',
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo', 'bar'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -637,7 +637,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => $refreshTokenId,
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );
@@ -702,7 +702,7 @@ class RefreshTokenGrantTest extends TestCase
                 'refresh_token_id' => $refreshTokenId,
                 'access_token_id'  => 'abcdef',
                 'scopes'           => ['foo'],
-                'user_id'          => 123,
+                'user_id'          => 'bar',
                 'expire_time'      => time() + 3600,
             ]
         );

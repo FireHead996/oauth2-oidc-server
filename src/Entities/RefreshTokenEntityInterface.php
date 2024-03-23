@@ -24,7 +24,7 @@ interface RefreshTokenEntityInterface
     /**
      * Set the token's identifier.
      */
-    public function setIdentifier(mixed $identifier): void;
+    public function setIdentifier(string $identifier): void;
 
     /**
      * Get the token's expiry date time.

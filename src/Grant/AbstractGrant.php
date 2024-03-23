@@ -52,7 +52,8 @@ use function explode;
 use function is_null;
 use function is_string;
 use function random_bytes;
-use function strpos;
+use function str_contains;
+use function str_starts_with;
 use function substr;
 use function trim;
 
@@ -129,9 +130,9 @@ abstract class AbstractGrant implements GrantTypeInterface
     /**
      * Set the private key
      */
-    public function setPrivateKey(CryptKeyInterface $key): void
+    public function setPrivateKey(CryptKeyInterface $privateKey): void
     {
-        $this->privateKey = $key;
+        $this->privateKey = $privateKey;
     }
 
     public function setDefaultScope(string $scope): void
@@ -139,9 +140,9 @@ abstract class AbstractGrant implements GrantTypeInterface
         $this->defaultScope = $scope;
     }
 
-    public function revokeRefreshTokens(bool $revokeRefreshTokens): void
+    public function revokeRefreshTokens(bool $willRevoke): void
     {
-        $this->revokeRefreshTokens = $revokeRefreshTokens;
+        $this->revokeRefreshTokens = $willRevoke;
     }
 
     /**
@@ -183,6 +184,8 @@ abstract class AbstractGrant implements GrantTypeInterface
      * doesn't actually enforce non-null returns/exception-on-no-client so
      * getClientEntity might return null. By contrast, this method will
      * always either return a ClientEntityInterface or throw.
+     *
+     * @throws OAuthServerException
      */
     protected function getClientEntityOrFail(string $clientId, ServerRequestInterface $request): ClientEntityInterface
     {
@@ -199,6 +202,8 @@ abstract class AbstractGrant implements GrantTypeInterface
     /**
      * Gets the client credentials from the request from the request body or
      * the Http Basic Authorization header
+     *
+     * @throws OAuthServerException
      *
      * @return string[]
      */
@@ -243,17 +248,15 @@ abstract class AbstractGrant implements GrantTypeInterface
     /**
      * Validate scopes in the request.
      *
-     * @param null|string|string[] $scopes
+     * @param string|string[] $scopes
      *
      * @throws OAuthServerException
      *
      * @return ScopeEntityInterface[]
      */
-    public function validateScopes(string|array|null $scopes, string $redirectUri = null): array
+    public function validateScopes(string|array $scopes = [], string $redirectUri = null): array
     {
-        if ($scopes === null) {
-            $scopes = [];
-        } elseif (is_string($scopes)) {
+        if (is_string($scopes)) {
             $scopes = $this->convertScopesQueryStringToArray($scopes);
         }
 
@@ -279,9 +282,7 @@ abstract class AbstractGrant implements GrantTypeInterface
      */
     private function convertScopesQueryStringToArray(string $scopes): array
     {
-        return array_filter(explode(self::SCOPE_DELIMITER_STRING, trim($scopes)), function ($scope) {
-            return $scope !== '';
-        });
+        return array_filter(explode(self::SCOPE_DELIMITER_STRING, trim($scopes)), fn($scope) => $scope !== '');
     }
 
     /**
@@ -310,7 +311,7 @@ abstract class AbstractGrant implements GrantTypeInterface
         }
 
         $header = $request->getHeader('Authorization')[0];
-        if (strpos($header, 'Basic ') !== 0) {
+        if (!str_starts_with($header, 'Basic ')) {
             return [null, null];
         }
 
@@ -320,7 +321,7 @@ abstract class AbstractGrant implements GrantTypeInterface
             return [null, null];
         }
 
-        if (strpos($decoded, ':') === false) {
+        if (!str_contains($decoded, ':')) {
             return [null, null]; // HTTP Basic header without colon isn't valid
         }
 
@@ -362,7 +363,7 @@ abstract class AbstractGrant implements GrantTypeInterface
     protected function issueAccessToken(
         DateInterval $accessTokenTTL,
         ClientEntityInterface $client,
-        string|int|null $userIdentifier,
+        string|null $userIdentifier,
         array $scopes = []
     ): AccessTokenEntityInterface {
         $maxGenerationAttempts = self::MAX_RANDOM_TOKEN_GENERATION_ATTEMPTS;

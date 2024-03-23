@@ -27,7 +27,7 @@ trait EntityTrait
         return $this->identifier;
     }
 
-    public function setIdentifier(mixed $identifier): void
+    public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }

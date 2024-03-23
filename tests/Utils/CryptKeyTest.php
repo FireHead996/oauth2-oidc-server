@@ -70,19 +70,26 @@ class CryptKeyTest extends TestCase
         $this->expectExceptionMessage('Invalid key supplied');
 
         try {
-            // Create the keypair
-            $res = openssl_pkey_new([
+            $options = [
                 'digest_alg' => 'sha512',
                 'private_key_bits' => 2048,
                 'private_key_type' => OPENSSL_KEYTYPE_DSA,
-            ]);
+            ];
+
+            // For Windows, we provide stub OpenSSL configuration
+            if (PHP_OS_FAMILY === 'Windows') {
+                $options['config'] = __DIR__ . '/../Stubs/openssl.cnf';
+            }
+
+            // Create the keypair
+            $res = openssl_pkey_new($options);
 
             if ($res === false) {
                 self::fail('The keypair was not created');
             }
 
             // Get private key
-            openssl_pkey_export($res, $keyContent, 'mystrongpassword');
+            openssl_pkey_export($res, $keyContent, 'mystrongpassword', $options);
             $path = self::generateKeyPath($keyContent);
 
             new CryptKey($keyContent, 'mystrongpassword');
@@ -96,19 +103,26 @@ class CryptKeyTest extends TestCase
     public function testECKeyType(): void
     {
         try {
-            // Create the keypair
-            $res = openssl_pkey_new([
+            $options = [
                 'digest_alg' => 'sha512',
                 'curve_name' => 'prime256v1',
                 'private_key_type' => OPENSSL_KEYTYPE_EC,
-            ]);
+            ];
+
+            // For Windows, we provide stub OpenSSL configuration
+            if (PHP_OS_FAMILY === 'Windows') {
+                $options['config'] = __DIR__ . '/../Stubs/openssl.cnf';
+            }
+
+            // Create the keypair
+            $res = openssl_pkey_new($options);
 
             if ($res === false) {
                 self::fail('The keypair was not created');
             }
 
             // Get private key
-            openssl_pkey_export($res, $keyContent, 'mystrongpassword');
+            openssl_pkey_export($res, $keyContent, 'mystrongpassword', $options);
 
             $key = new CryptKey($keyContent, 'mystrongpassword');
 
@@ -122,19 +136,26 @@ class CryptKeyTest extends TestCase
     public function testRSAKeyType(): void
     {
         try {
+            $options = [
+                'digest_alg' => 'sha512',
+                'private_key_bits' => 2048,
+                'private_key_type' => OPENSSL_KEYTYPE_RSA,
+            ];
+
+            // For Windows, we provide stub OpenSSL configuration
+            if (PHP_OS_FAMILY === 'Windows') {
+                $options['config'] = __DIR__ . '/../Stubs/openssl.cnf';
+            }
+
             // Create the keypair
-            $res = openssl_pkey_new([
-                 'digest_alg' => 'sha512',
-                 'private_key_bits' => 2048,
-                 'private_key_type' => OPENSSL_KEYTYPE_RSA,
-            ]);
+            $res = openssl_pkey_new($options);
 
             if ($res === false) {
                 self::fail('The keypair was not created');
             }
 
             // Get private key
-            openssl_pkey_export($res, $keyContent, 'mystrongpassword');
+            openssl_pkey_export($res, $keyContent, 'mystrongpassword', $options);
 
             $key = new CryptKey($keyContent, 'mystrongpassword');
 

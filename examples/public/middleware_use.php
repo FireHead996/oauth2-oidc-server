@@ -10,6 +10,8 @@
 
 declare(strict_types=1);
 
+include __DIR__ . '/../vendor/autoload.php';
+
 use Laminas\Diactoros\Stream;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
@@ -25,8 +27,6 @@ use OAuth2ServerExamples\Repositories\ScopeRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
-
-include __DIR__ . '/../vendor/autoload.php';
 
 $app = new App([
     'settings'                 => [
@@ -87,7 +87,7 @@ $app->post('/access_token', function (): void {
 
 // Secured API
 $app->group('/api', function (): void {
-    $this->get('/user', function (ServerRequestInterface $request, ResponseInterface $response) {
+    $app->get('/user', function (ServerRequestInterface $request, ResponseInterface $response) {
         $params = [];
 
         if (in_array('basic', $request->getAttribute('oauth_scopes', []))) {
